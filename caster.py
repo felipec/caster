@@ -13,12 +13,10 @@ import urllib.parse
 import pychromecast
 import readchar
 
-
 def get_internal_ip(dst_ip):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect((dst_ip, 0))
     return s.getsockname()[0]
-
 
 def get_seek_time(time_str):
     time_splited = time_str.split(':')
@@ -31,9 +29,7 @@ def get_seek_time(time_str):
         time += 3600 * int(time_splited[-3])
     return time
 
-
 mimetypes.add_type("text/vtt", ".vtt")
-
 
 class RequestHandler(BaseHTTPRequestHandler):
     chunk_size = 1024
@@ -90,10 +86,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         except socket.error:
             pass
 
-
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
-
 
 def handle_input(server_thread, dev, mc):
     while server_thread.is_alive():
@@ -122,7 +116,6 @@ def handle_input(server_thread, dev, mc):
             else:
                 dev.set_volume_muted(True)
 
-
 def get_args():
     parser = argparse.ArgumentParser(description='Caster - cast media to chromecast')
     parser.add_argument('file', help='The file to play')
@@ -132,7 +125,6 @@ def get_args():
     parser.add_argument('--subtitles', help='subtitles', default=None)
     parser.add_argument('--seek', help='media starting position in HH:MM:SS format', default="00:00:00")
     return parser.parse_args()
-
 
 def main():
     args = get_args()
