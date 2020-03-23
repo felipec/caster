@@ -63,7 +63,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.send_header('Accept-Ranges', 'bytes')
             else:
                 self.send_response(200)
-                start_range, end_range = 0, file_size
+                start_range, end_range = 0, (file_size - 1)
             self.send_header('Content-Length', end_range - start_range + 1)
             self.send_header("Content-type", content_type[0])
             self.send_header('Access-Control-Allow-Origin', '*')
@@ -75,13 +75,13 @@ class RequestHandler(BaseHTTPRequestHandler):
 
             while True:
                 if curr + self.chunk_size > end_range:
-                    read_size = end_range - curr
+                    read_size = end_range - curr + 1
                 else:
                     read_size = self.chunk_size
                 curr += read_size
                 data = f.read(read_size)
                 self.wfile.write(data)
-                if curr == end_range:
+                if curr > end_range:
                     break
 
     def handle_one_request(self):
