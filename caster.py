@@ -8,6 +8,7 @@ import socket
 import os
 from socketserver import ThreadingMixIn
 import mimetypes
+import urllib.parse
 
 import pychromecast
 import readchar
@@ -46,9 +47,11 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self.protocol_version = "HTTP/1.1"
-        content_type = mimetypes.guess_type(self.path)
 
-        with open(self.path, "rb") as f:
+        path = urllib.parse.unquote(self.path)
+        content_type = mimetypes.guess_type(path)
+
+        with open(path, "rb") as f:
             f.seek(0, 2)
             file_size = f.tell()
 
