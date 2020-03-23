@@ -134,7 +134,7 @@ def get_args():
 def main():
     args = get_args()
 
-    file_path = args.file
+    file_path = os.path.abspath(args.file)
     device_name = args.device
     subs = args.subtitles
     seek = get_seek_time(args.seek)
@@ -164,7 +164,7 @@ def main():
         subtitles_url = "http://{IP}:{PORT}/{URI}".format(IP=server_ip, PORT=server.server_port, URI=subs)
     else:
         subtitles_url = None
-    media_url = "http://{IP}:{PORT}/{URI}".format(IP=server_ip, PORT=server.server_port, URI=file_path)
+    media_url = "http://{IP}:{PORT}{URI}".format(IP=server_ip, PORT=server.server_port, URI=file_path)
     mc.play_media(media_url, 'video/mp4', title=os.path.basename(file_path), subtitles=subtitles_url,
                   current_time=seek)
     mc.update_status()
